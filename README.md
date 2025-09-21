@@ -20,7 +20,7 @@ A modern, responsive, and fast **E-Commerce Website** built using
 ## 📂 Project Structure
 
 ``` bash
-ecommerce-website/
+tikoshi/
 ├── public/              # Static assets
 ├── src/
 │   ├── components/      # Reusable UI components
@@ -28,8 +28,9 @@ ecommerce-website/
 │   ├── data/            # Static product data (JSON or JS files)
 │   ├── App.jsx          # Main app entry
 │   ├── main.jsx         # React DOM render entry
-│   └── styles/          # Global and component styles
+│   └── index.css         # Global and component styles
 ├── index.html           # Root HTML file
+├── eslint.config.js           # Eslint Configuration
 ├── package.json         # Project metadata & dependencies
 └── vite.config.js       # Vite configuration
 ```
@@ -73,9 +74,9 @@ ecommerce-website/
 
 ## 📦 Dependencies
 
--   [React](https://reactjs.org/)\
--   [Vite](https://vitejs.dev/)\
--   [Framer Motion](https://www.framer.com/motion/)\
+-   [React](https://reactjs.org/)
+-   [Vite](https://vitejs.dev/)
+-   [Framer Motion](https://www.framer.com/motion/)
 -   [React Router](https://reactrouter.com/)
 
 ------------------------------------------------------------------------
@@ -86,20 +87,6 @@ ecommerce-website/
 -   Page transitions using **Framer Motion**\
 -   Modern card-based layout for products\
 -   Responsive grid system
-
-------------------------------------------------------------------------
-
-## 📸 Screenshots
-
-*Add some screenshots of your website here (Home, Product page, Cart,
-etc.)*
-
-------------------------------------------------------------------------
-
-## 🤝 Contributing
-
-Contributions are welcome! Please fork this repo and submit a pull
-request.
 
 ------------------------------------------------------------------------
 
