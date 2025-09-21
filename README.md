@@ -78,6 +78,7 @@ tikoshi/
 -   [Vite](https://vitejs.dev/)
 -   [Framer Motion](https://www.framer.com/motion/)
 -   [React Router](https://reactrouter.com/)
+-   [Axios](https://axios-http.com/)
 
 ------------------------------------------------------------------------
 
