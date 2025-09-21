@@ -2,8 +2,9 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import InfoBar from "../components/InfoBar";
 import CategoryGrid from "../components/CategoryGrid";
-import OriginalBrands from "../components/OriginalBrands";
+import BestDeal from "../components/BestDeal";
 import Recommended from "../components/Recommended";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -12,8 +13,9 @@ const Home = () => {
       <Hero />
       <InfoBar />
       <CategoryGrid />
-      <OriginalBrands />
+      <BestDeal />
       <Recommended />
+      <Footer />
     </>
   )
 }

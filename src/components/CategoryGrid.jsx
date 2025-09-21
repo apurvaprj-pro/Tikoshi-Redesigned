@@ -368,7 +368,7 @@ const CategoryGrid = () => {
                       {hoveredHierarchy.name}
                     </h3> */}
 
-                    <div className="space-y-3 max-h-48 overflow-y-auto pr-2">
+                    <div className="space-y-3 max-h-80 overflow-y-auto pr-2 scrollbar-visible">
                       {hoveredHierarchy.level1.length === 0 && (
                         <div className="text-xs text-gray-500">No subcategories</div>
                       )}

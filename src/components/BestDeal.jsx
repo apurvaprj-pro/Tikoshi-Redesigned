@@ -26,13 +26,13 @@ const cardVariants = {
   }),
 };
 
-export default function OriginalBrands() {
+export default function BestDeal() {
   return (
     <section className="px-6 py-10 bg-gray-50">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-900">
-          Original Brands
+          Today's Best Deal
         </h2>
         <a
           href="#"

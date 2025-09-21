@@ -12,24 +12,24 @@ const InfoBar = () => {
   return (
     <div className="w-full flex justify-center mt-4">
       <motion.div
-        className="bg-[#f0f8ff] text-gray-800 border border-gray-300 rounded-lg max-w-4xl w-full px-4 py-2"
+        className="bg-[#f0f8ff] text-gray-800 border border-gray-300 rounded-lg w-full px-6 py-3 max-w-7xl"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex flex-wrap justify-center md:justify-between gap-4">
+        <div className="flex flex-wrap justify-between gap-4">
           {items.map((item, index) => (
             <motion.div
               key={index}
-              className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full cursor-default"
+              className="flex items-center gap-2 bg-white px-4 py-2 rounded-full cursor-default shadow-sm"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.2 }}
             >
               {item.icon}
-              <span className="text-sm font-medium">{item.text}</span>
+              <span className="text-sm font-bold">{item.text}</span>
             </motion.div>
           ))}
         </div>
@@ -38,4 +38,4 @@ const InfoBar = () => {
   )
 }
 
-export default InfoBar;
+export default InfoBar
