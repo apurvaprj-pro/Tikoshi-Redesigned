@@ -32,7 +32,8 @@ const CategoryTile = ({ cat, idx, onActivate, onHover, onLeave }) => {
       data-aos-delay={idx * 50}
       className="flex flex-col items-center cursor-pointer flex-shrink-0 w-40 mx-2 outline-none"
     >
-      <div className="relative w-32 h-32 rounded-full border-4 border-gray-300 bg-[#f9fcff] flex items-center justify-center overflow-hidden transition group-hover:border-[#0d99ff]">
+      {/* Square image container */}
+      <div className="relative w-32 h-32 border-2 border-gray-200 bg-[#f9fcff] flex items-center justify-center overflow-hidden">
         <img
           src={imgSrc}
           alt={cat.name || "category image"}
@@ -42,7 +43,14 @@ const CategoryTile = ({ cat, idx, onActivate, onHover, onLeave }) => {
           className="block"
         />
       </div>
-      <span className="mt-2 text-center font-semibold text-sm">{cat.name}</span>
+
+      {/* Blue rectangle with text */}
+      <div className="w-32 bg-[#0d99ff] py-2 flex items-center justify-center">
+        <span className="text-white text-sm font-medium text-center truncate px-2">
+          {cat.name}
+        </span>
+      </div>
+
       {cat.description && (
         <span className="mt-1 text-center text-xs text-gray-500 line-clamp-2">
           {cat.description}
@@ -52,14 +60,14 @@ const CategoryTile = ({ cat, idx, onActivate, onHover, onLeave }) => {
   );
 };
 
-// Skeleton
+// Skeleton (square + blue bar)
 const SkeletonGrid = ({ count = 8 }) => {
   return (
     <div className="flex overflow-hidden space-x-4 px-4">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex flex-col items-center animate-pulse w-40">
-          <div className="w-32 h-32 rounded-full bg-gray-200 border-4 border-gray-200" />
-          <div className="h-4 mt-3 w-24 bg-gray-200 rounded" />
+          <div className="w-32 h-32 bg-gray-200 border-2 border-gray-200" />
+          <div className="w-32 h-8 mt-1 bg-blue-200 rounded" />
         </div>
       ))}
     </div>
@@ -137,8 +145,8 @@ const buildHierarchy = (rows = []) => {
 
 // Main Component
 const CategoryGrid = () => {
-  const [categories, setCategories] = useState([]); // tiles
-  const [hierarchy, setHierarchy] = useState([]); // dropdown data
+  const [categories, setCategories] = useState([]);
+  const [hierarchy, setHierarchy] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const controllerRef = useRef(null);
@@ -146,7 +154,6 @@ const CategoryGrid = () => {
   const wrapperRef = useRef(null);
   const startTimeRef = useRef(0);
 
-  // dropdown state
   const [hoveredCatId, setHoveredCatId] = useState(null);
   const [dropdownLeft, setDropdownLeft] = useState(0);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -156,10 +163,9 @@ const CategoryGrid = () => {
     console.log("Category clicked:", cat.id, cat.name);
   }, []);
 
-  // Scroll handler
   const scroll = (direction) => {
     if (!scrollRef.current) return;
-    const scrollAmount = 300; // px per click
+    const scrollAmount = 300;
     if (direction === "left") {
       scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     } else {
@@ -167,18 +173,13 @@ const CategoryGrid = () => {
     }
   };
 
-  // Hover handlers
   const handleTileHover = (cat, e) => {
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-      hideTimeoutRef.current = null;
-    }
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
 
     const containerRect = scrollRef.current?.getBoundingClientRect();
     const tileRect = e.currentTarget.getBoundingClientRect();
     const wrapperRect = wrapperRef.current?.getBoundingClientRect();
 
-    // compute left relative to wrapper (so absolute positioning inside wrapper works)
     let left = 0;
     if (wrapperRect && tileRect) {
       left = tileRect.left - wrapperRect.left + tileRect.width / 2;
@@ -201,10 +202,7 @@ const CategoryGrid = () => {
   };
 
   const handleDropdownEnter = () => {
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-      hideTimeoutRef.current = null;
-    }
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
     setDropdownVisible(true);
   };
   const handleDropdownLeave = () => {
@@ -249,9 +247,7 @@ const CategoryGrid = () => {
       const elapsed = Date.now() - startTimeRef.current;
       const remaining = Math.max(0, SKELETON_MIN_MS - elapsed);
 
-      setTimeout(() => {
-        setLoading(false);
-      }, remaining);
+      setTimeout(() => setLoading(false), remaining);
     }
   }, []);
 
@@ -297,34 +293,32 @@ const CategoryGrid = () => {
       )}
 
       {!loading && !error && categories.length > 0 && (
-        // wrapperRef is the positioned container for arrows & dropdown
-        <div ref={wrapperRef} className="relative max-w-6xl mx-auto">
-          {/* Left Arrow - absolute and outside the carousel area; hidden on small screens */}
+        <div ref={wrapperRef} className="relative w-full mx-auto px-12">
+          {/* Left Arrow */}
           <button
             onClick={() => scroll("left")}
             aria-label="Scroll left"
-            className="hidden sm:flex items-center justify-center absolute -left-6 top-1/2 -translate-y-1/2 bg-[#0d99ff] text-white shadow-lg rounded-full p-2 hover:bg-[#0b88e5] transition z-20"
+            className="hidden sm:flex items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 bg-[#0d99ff] text-white shadow-lg rounded-full p-2 hover:bg-[#0b88e5] transition z-20"
             style={{ width: 40, height: 40 }}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Carousel area with padding so content doesn't touch arrows */}
-          <div className="relative px-8">
+          {/* Carousel */}
+          <div className="relative">
             <div
               ref={scrollRef}
-              className="flex overflow-x-auto no-scrollbar scroll-smooth px-2 py-2"
+              className="flex overflow-x-auto no-scrollbar scroll-smooth py-2"
             >
               {categories.map((cat, i) => (
-                <div key={cat.id}>
-                  <CategoryTile
-                    cat={cat}
-                    idx={i}
-                    onActivate={handleActivate}
-                    onHover={handleTileHover}
-                    onLeave={handleTileLeave}
-                  />
-                </div>
+                <CategoryTile
+                  key={cat.id}
+                  cat={cat}
+                  idx={i}
+                  onActivate={handleActivate}
+                  onHover={handleTileHover}
+                  onLeave={handleTileLeave}
+                />
               ))}
             </div>
           </div>
@@ -333,48 +327,36 @@ const CategoryGrid = () => {
           <button
             onClick={() => scroll("right")}
             aria-label="Scroll right"
-            className="hidden sm:flex items-center justify-center absolute -right-6 top-1/2 -translate-y-1/2 bg-[#0d99ff] text-white shadow-lg rounded-full p-2 hover:bg-[#0b88e5] transition z-20"
+            className="hidden sm:flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 bg-[#0d99ff] text-white shadow-lg rounded-full p-2 hover:bg-[#0b88e5] transition z-20"
             style={{ width: 40, height: 40 }}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Centralized Dropdown — positioned relative to wrapper */}
+          {/* Dropdown */}
           {dropdownVisible && hoveredHierarchy && (
             <div
               onMouseEnter={handleDropdownEnter}
               onMouseLeave={handleDropdownLeave}
               className="absolute top-full mt-2 z-50"
               style={{
-                left: Math.max(8, dropdownLeft - 220), // clamp left a bit to avoid extreme edges
+                left: Math.max(8, dropdownLeft - 220),
                 minWidth: 300,
                 maxWidth: 720,
               }}
             >
               <div className="bg-white rounded shadow-lg border border-gray-100 p-4 w-[440px]">
                 <div className="flex items-start space-x-4">
-                  {/* Left column: category info Archana*/}
-                  {/* <div className="flex-shrink-0 w-20">
-                    <img
-                      src={hoveredHierarchy.imageURL || PLACEHOLDER}
-                      alt={hoveredHierarchy.name}
-                      className="w-16 h-16 object-contain"
-                    />
-                  </div> */}
-
-                  {/* Right column: hierarchical lists --Archana */}
                   <div className="flex-1">
-                    {/* <h3 className="text-sm font-semibold mb-2">
-                      {hoveredHierarchy.name}
-                    </h3> */}
-
                     <div className="space-y-3 max-h-80 overflow-y-auto pr-2 scrollbar-visible">
                       {hoveredHierarchy.level1.length === 0 && (
-                        <div className="text-xs text-gray-500">No subcategories</div>
+                        <div className="text-xs text-gray-500">
+                          No subcategories
+                        </div>
                       )}
 
                       {hoveredHierarchy.level1.map((l1) => (
-                        <div key={l1.id} className="">
+                        <div key={l1.id}>
                           <div className="text-sm font-medium">{l1.name}</div>
                           <div className="ml-3 mt-1 space-y-1">
                             {l1.level2.length === 0 && (
@@ -385,10 +367,15 @@ const CategoryGrid = () => {
 
                             {l1.level2.map((l2) => (
                               <div key={l2.id} className="ml-2">
-                                <div className="text-xs font-semibold">{l2.name}</div>
-                                <div className="ml-3 mt-1 flex flex-wrap gap-2">
+                                <div className="text-xs font-semibold">
+                                  {l2.name}
+                                </div>
+                                {/* FIXED: Reduced spacing for level 3 */}
+                                <div className="mt-1 flex flex-wrap gap-x-1 gap-y-1">
                                   {l2.level3.length === 0 ? (
-                                    <div className="text-xs text-gray-400">—</div>
+                                    <div className="text-xs text-gray-400">
+                                      —
+                                    </div>
                                   ) : (
                                     l2.level3.map((l3) => (
                                       <button
@@ -402,7 +389,7 @@ const CategoryGrid = () => {
                                             l3.id
                                           )
                                         }
-                                        className="text-xs px-2 py-1 rounded hover:bg-[#f0f9ff] transition"
+                                        className="text-xs px-2 py-0.5 rounded hover:bg-[#f0f9ff] transition"
                                         style={{ color: PRIMARY }}
                                       >
                                         {l3.name}
